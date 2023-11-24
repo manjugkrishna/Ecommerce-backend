@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 require('express-async-errors');
 require('dotenv').config();
-const connectDB = require('./db/connect');
+const db = require('./models')
 const authenticateUser = require('./middleware/authentication');
 const cors = require('cors')
 
@@ -27,19 +27,17 @@ app.use('/api/v1/',authenticateUser,cartRouter)
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
 
+db.sequelize
+    .sync()
+    .then(() => {
+        console.log("synced db");
+    })
+    .catch((err) => {
+        console.log("failed" + err.message);
+    });
+
 const port = process.env.PORT || 3000;
 
-const start = async () => {
-    try {
-        await connectDB(process.env.MONGO_URI); //databaseConnection
-        app.listen(port, () =>
-           
-            console.log(`Server is listening on port ${port}...`)
-        );
-    } catch (error) {
-        
-        console.log(error);
-    }
-};
-
-start();
+app.listen(port, () => {
+    console.log(`server is listening on ${port}...`);
+});
