@@ -6,7 +6,8 @@ module.exports = (sequelize, DataTypes) => {
         // This method is not a part of Sequelize lifecycle.
         // The `models/index` file will call this method automatically.
         static associate(model) {
-            // User.hasMany(model.Book, { foreignKey: 'userId', as: 'books' });
+            User.hasMany(model.Cart, { foreignKey: 'id'});
+          //  User.hasMany(model.Order, { foreignKey: 'id',});
         }
     }
     User.init(
@@ -15,8 +16,6 @@ module.exports = (sequelize, DataTypes) => {
                 type:DataTypes.UUID,
                 defaultValue:DataTypes.UUIDV4,
                 primaryKey:true
-                
-
             },
             username: {
                 type: DataTypes.STRING,
@@ -31,7 +30,7 @@ module.exports = (sequelize, DataTypes) => {
                 allowNull: false,
             },
             mobileNumber: {
-                type: DataTypes.STRING,
+                type: DataTypes.BIGINT,
                 allowNull: false,
             },
         },

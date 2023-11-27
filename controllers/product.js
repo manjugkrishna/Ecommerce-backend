@@ -1,5 +1,6 @@
-const Product = require('../model/product');
 const path = require('path');
+const db = require('../models');
+const Product=db.Product;
 const { StatusCodes } = require('http-status-codes');
 const { NotFoundError, BadRequestError } = require('../errors');
 
@@ -7,7 +8,7 @@ const { NotFoundError, BadRequestError } = require('../errors');
 
 const getAllProducts = async (req, res) => {
     // find all products
-    const product = await Product.find()
+    const product = await Product.findAll({})
     res.status(StatusCodes.OK).json({ data: product });
 
 };
@@ -35,7 +36,7 @@ const getProduct = async (req, res) => {
     const {
         query: { category: category },
     } = req;
-    const product = await Product.find({ category: category })
+    const product = await Product.findAll({ where: { category:category } })
     res.status(StatusCodes.OK).json({ product });
 };
 
@@ -43,10 +44,7 @@ const updateProduct = async (req, res) => {
     const {
         params: { id: productId },
     } = req;
-    const product = await Product.findOneAndUpdate(
-        { _id: productId },
-        req.body,
-        { new: true, runValidators: true }
+    const product = await Product.update( req.body,{where:{ id: productId }}
     );
     if (!product) {
         throw new NotFoundError(`No product with id ${productId}`);
@@ -58,9 +56,9 @@ const deleteProduct = async (req, res) => {
     const {
         params: { id: productId }
     } = req;
-    const product = await Product.findOneAndDelete({
-        _id: productId
-    });
+    const product = await Product.destroy({where:{
+        id: productId
+}});
     if (!product) {
         throw new NotFoundError(`No product with id ${productId}`);
     }

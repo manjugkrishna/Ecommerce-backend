@@ -24,7 +24,7 @@ module.exports = {
                     allowNull: false,
                 },
                 mobileNumber:{
-                  type:Sequelize.STRING,
+                  type:Sequelize.BIGINT,
                   allowNull: false,
                 },
                 createdAt: {
