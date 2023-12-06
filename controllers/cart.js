@@ -7,10 +7,16 @@ const User = db.User;
 const Order = db.Order
 // const mongoose = require('mongoose')
 const { StatusCodes } = require('http-status-codes');
-const { NotFoundError } = require('../errors');
+const { NotFoundError,BadRequestError } = require('../errors');
+const { validationResult } = require('express-validator');
 
 // add to cart
 const addCart = async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+      const errorMessages = errors.array().map(error => `${error.msg}`).join(',');
+      throw new BadRequestError(errorMessages);;
+  }
   const { productId, quantity } = req.body;
   const userId = req.user.userId;
 

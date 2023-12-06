@@ -4,8 +4,18 @@ const jwt=require('../utils/jwt')
 const { StatusCodes } = require('http-status-codes');
 const { BadRequestError, UnauthenticatedError } = require('../errors');
 const bcrypt = require("../utils/bcrypt");
+const { validationResult } = require('express-validator');
 //signup
 const signUp = async (req, res) => {
+    
+  const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        const errorMessages = errors.array().map(error => `${error.msg}`).join(',');
+ 
+        // Throw the error
+        throw new BadRequestError(errorMessages);;
+    }
+    
     let {
         username,
         email,
@@ -31,6 +41,13 @@ const mobileAlreadyExists = await User.findOne({ where: { mobileNumber:phoneNumb
 
 //login
 const login = async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        const errorMessages = errors.array().map(error => `${error.msg}`).join(',');
+ 
+        // Throw the error
+        throw new BadRequestError(errorMessages);;
+    }
     const { email, password } = req.body;
 
     if (!email || !password) {

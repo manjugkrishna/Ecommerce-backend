@@ -10,7 +10,6 @@ const getAllProducts = async (req, res) => {
     // find all products
     const product = await Product.findAll({})
     res.status(StatusCodes.OK).json({ data: product });
-
 };
 
 // create Product

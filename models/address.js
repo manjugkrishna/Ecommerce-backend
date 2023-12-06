@@ -1,44 +1,46 @@
 const { Model } = require('sequelize');
-
+ 
 module.exports = (sequelize, DataTypes) => {
-    class User extends Model {
-
+    class Address extends Model {
+       
         static associate(model) {
-            User.hasMany(model.Cart, { foreignKey: 'id'});
-            User.hasMany(model.Address, { foreignKey: 'userId'});
+            Address.belongsTo(model.User, { foreignKey: 'userId' });
         }
     }
-    User.init(
+    Address.init(
         {
             id:{
                 type:DataTypes.UUID,
                 defaultValue:DataTypes.UUIDV4,
                 primaryKey:true
             },
-            username: {
-                type: DataTypes.STRING,
+            userId:{
+                type: DataTypes.UUID,
                 allowNull: false,
-            },
-            email: {
+              },
+            address: {
                 type: DataTypes.STRING,
-                unique: false,
             },
-            password: {
+            city: {
                 type: DataTypes.STRING,
-                allowNull: false,
             },
-            mobileNumber: {
-                type: DataTypes.BIGINT,
-                allowNull: false,
+            country: {
+                type: DataTypes.STRING,
+            },
+            state: {
+                type: DataTypes.STRING,
+            },
+            postalCode:{
+                type:DataTypes.BIGINT
             },
         },
         {
             sequelize,
-            modelName: User.name,
-            tableName: 'Users',
+            modelName: Address.name,
+            tableName: 'Address',
             timestamps: true,
         }
     );
-
-    return User;
+ 
+    return Address;
 };

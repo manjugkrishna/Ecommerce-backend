@@ -2,36 +2,32 @@ const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
     class Order extends Model {
-       
+
         static associate(model) {
-          
-        //   Order.belongsTo(model.User, { foreignKey: 'userId' });
-        //   Order.hasMany(model.Cart, { foreignKey: 'orderId', as: 'items' });
         }
     }
     Order.init(
         {
-            
-            id:{
-                type:DataTypes.UUID,
-                defaultValue:DataTypes.UUIDV4,
-                primaryKey:true
+            id: {
+                type: DataTypes.UUID,
+                defaultValue: DataTypes.UUIDV4,
+                primaryKey: true
             },
-            userId:{
+            userId: {
                 type: DataTypes.UUID,
                 allowNull: false,
-              },
-              items: {
+            },
+            items: {
                 type: DataTypes.JSONB,
                 allowNull: false,
 
             },
-            total:{
-                type:DataTypes.BIGINT
+            total: {
+                type: DataTypes.BIGINT
             },
-            status:{
-                type:DataTypes.ENUM("PENDING","SUCCESS"),
-                defaultValue:"PENDING"
+            status: {
+                type: DataTypes.ENUM("PENDING", "SUCCESS"),
+                defaultValue: "PENDING"
             }
         },
         {
